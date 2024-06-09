@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://bm2bh4f504sqa"]
+
+[ext_resource type="Script" path="res://TotalJSON/Examples/CreateAndModifyJSON.cs" id="1_sk3f7"]
+[ext_resource type="Script" path="res://TotalJSON/Examples/ParseAndHandleJSON.cs" id="2_dduuq"]
+[ext_resource type="Script" path="res://TotalJSON/Examples/SerializeAndDeserialize.cs" id="3_psqsj"]
+[ext_resource type="Script" path="res://TotalJSON/Examples/SaveAndLoadFile.cs" id="4_uexj1"]
+
+[node name="An Example Scene" type="Node2D"]
+
+[node name="Info Label" type="Label" parent="."]
+offset_left = 42.7
+offset_top = 15.3
+offset_right = 469.7
+offset_bottom = 168.3
+text = "Nothing to see in this view.
+
+When pressing Play, four example scripts are executed.
+Check their output from the console.
+
+But mostly, see the scripts themselves."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CreateAndModifyJSON" type="Node" parent="."]
+script = ExtResource("1_sk3f7")
+
+[node name="ParseAndHandleJSON" type="Node" parent="."]
+script = ExtResource("2_dduuq")
+
+[node name="SerializeAndDeserialize" type="Node" parent="."]
+script = ExtResource("3_psqsj")
+
+[node name="SaveAndLoadFile" type="Node" parent="."]
+script = ExtResource("4_uexj1")
