@@ -27,7 +27,7 @@ Going the extra mile:
 * Multiple examples, also real-life data examples
 * Keeps key/value pairs of JSON object in order
 
-[Online API documentation](https://www.leguar.com/unity/totaljson/apidoc/)
+[Online API documentation](https://www.leguar.com/godot/totaljson/apidoc/)
 
 ## Unity version
 
