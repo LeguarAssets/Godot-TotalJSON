@@ -1022,7 +1022,11 @@ namespace Leguar.TotalJSON {
 				throw (new SerializeException("Parameter object is type that can't be serialized", objectToSerialize, "objectToSerialize"));
 			}
 			if (!(jValue is JSON)) {
-				throw (new SerializeException("Parameter object can be serialized but not to JSON", objectToSerialize, "objectToSerialize"));
+				string exceptionMessage = "Parameter object can be serialized but not to JSON";
+				if (jValue is JArray) {
+					exceptionMessage += " (use JArray.Serialize instead)";
+				}
+				throw (new SerializeException(exceptionMessage, objectToSerialize, "objectToSerialize"));
 			}
 			return ((JSON)(jValue));
 		}
@@ -1072,24 +1076,32 @@ namespace Leguar.TotalJSON {
 			if (type.IsGenericType) {
 				if (type.GetGenericTypeDefinition()==typeof(Dictionary<,>)) {
 					Type[] dictTypes = type.GetGenericArguments();
-					bool keyStringType = (dictTypes[0]==typeof(string) || dictTypes[0]==typeof(object));
+					Type keyType = dictTypes[0];
+					Type valueType = dictTypes[1];
+					bool keyStringType = (keyType==typeof(string) || keyType==typeof(object));
 					if (!deserializeSettings.AllowNonStringDictionaryKeys && !keyStringType) {
-						throw (DeserializeException.forDictionaryKeyTypeNotString(dictTypes[0],toFieldName));
+						throw (DeserializeException.forDictionaryKeyTypeNotString(keyType,toFieldName));
 					}
-					bool keyIntType = (dictTypes[0]==typeof(int));
-					bool keyLongType = (dictTypes[0]==typeof(long));
-					if (!keyStringType && !keyIntType && !keyLongType) {
-						throw (DeserializeException.forDictionaryKeyTypeNotKnown(dictTypes[0],toFieldName));
+					bool keyIntType = (keyType==typeof(int));
+					bool keyLongType = (keyType==typeof(long));
+					bool keyEnumType = keyType.IsEnum;
+					if (!keyStringType && !keyIntType && !keyLongType && !keyEnumType) {
+						throw (DeserializeException.forDictionaryKeyTypeNotKnown(keyType,toFieldName));
 					}
 					object objTypeOfDict = Activator.CreateInstance(type);
 					IDictionary objDict = (IDictionary)(objTypeOfDict);
 					foreach (string stringKey in keyValuePairs.Keys) {
 						JValue jValue = keyValuePairs[stringKey];
-						object sValue = jValue.zDeserialize(dictTypes[1], toFieldName, deserializeSettings);
+						object sValue = jValue.zDeserialize(valueType, toFieldName, deserializeSettings);
 						if (keyIntType) {
 							objDict.Add(int.Parse(stringKey), sValue);
 						} else if (keyLongType) {
 							objDict.Add(long.Parse(stringKey), sValue);
+						} else if (keyEnumType) {
+							if (!Enum.IsDefined(keyType, stringKey)) {
+								throw (DeserializeException.forDictionaryKeyEnumTypeNotFound(keyType,toFieldName,stringKey));
+							}
+							objDict.Add(Enum.Parse(keyType, stringKey), sValue);
 						} else {
 							objDict.Add(stringKey, sValue);
 						}
