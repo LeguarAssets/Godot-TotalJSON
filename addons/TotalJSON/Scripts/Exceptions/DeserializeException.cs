@@ -30,6 +30,11 @@ namespace Leguar.TotalJSON {
 			return (new DeserializeException(fullMessage));
 		}
 
+		internal static DeserializeException forDictionaryKeyEnumTypeNotFound(Type type, string toFieldName, string stringKey) {
+			string fullMessage = "Can not deserialize to dictionary where key type is '"+type+"'"+getToFieldNameString(toFieldName)+". Target enum doesn't contain '"+stringKey+"'";
+			return (new DeserializeException(fullMessage));
+		}
+		
 		internal static DeserializeException forNonMatchingTypeObject(JValue jValue, string toFieldName) {
 			string fullMessage = "Can not deserialize '"+jValue.GetType()+"' to object, use setting 'AllowFieldsToBeObjects' if this is wanted"+getToFieldNameString(toFieldName);
 			return (new DeserializeException(fullMessage));
