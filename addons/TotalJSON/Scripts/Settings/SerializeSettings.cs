@@ -16,6 +16,12 @@ namespace Leguar.TotalJSON {
 		/// If this is set false, dictionaries key type may be anything and serialization is just using ToString() to create key. In this case, make sure each dictionary
 		/// key string representation is unique.
 		/// </summary>
+		/// <remarks>
+		/// Note that it may not be possible to deserialize resulting JSON back any more since converting plain string back to object is not possible.
+		///
+		/// TotalJSON still have extra support for int, long and enum type dictionary keys and they can be serialized and then deserialized back by using
+		/// AllowNonStringDictionaryKeys both when serializing and deserializing.
+		/// </remarks>
 		/// <value>
 		/// False by default, set true to allow any dictionary keys.
 		/// </value>

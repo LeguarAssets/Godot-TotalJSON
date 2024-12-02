@@ -34,7 +34,7 @@ namespace Leguar.TotalJSON {
 		/// <summary>
 		/// By default this is false. Meaning that if any JSON object is deserialized to dictionary, target dictionary must be using string keys, like JSON itself is using.
 		/// 
-		/// If this is set true, dictionaries key type may also be integer or long. In this case deserialization try to change JSON keys to required dictionary key type.
+		/// If this is set true, dictionaries key type may also be integer, long or enum. In this case deserialization try to change JSON keys to required dictionary key type.
 		/// Note however that this may cause several problems when deserializing. For example, JSON object may contain keys "1" and "01". Deserializing this to Dictionary
 		/// with string keys can be done without issues. But deserializing that JSON to Dictionary with integer keys causes error due duplicate key, even original JSON is
 		/// completely valid.
